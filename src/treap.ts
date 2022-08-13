@@ -23,7 +23,7 @@ class TreapNode<T> {
     this.update()
   }
   update() {
-    this.size = (this.left?.size ?? 0) + (this.right?.size ?? 0)
+    this.size = (this.left?.size ?? 0) + (this.right?.size ?? 0) + this.cnt
   }
   rotateRight() {
     const left = this.left!
@@ -84,7 +84,14 @@ class Treap<T = number> {
     this.print(p.left)
     this.print(p.right)
   }
-
+  /**
+   *
+   * @param value
+   * @param p null 表示递归结束，undefined 用于外部调用 API 的时候甩传入
+   * @param parent JS 不存在 C++ 中的引用，旋转的时候要修改父节点的指向，因此必须在递归的时候记录父节点和方向信息
+   * @param direction
+   * @returns
+   */
   insert(value: T, p: TreapNode<T> | undefined = undefined, parent: TreapNode<T> | undefined = undefined, direction: 'left' | 'right' | undefined = undefined) {
     p ??= this.root
     const compareResult = this.compareFn(value, p.value)
@@ -207,6 +214,42 @@ class Treap<T = number> {
       p = compareResult < 0 ? p.left : p.right
     }
     return ans
+  }
+
+  getRankByValue(value: T, p: TreapNode<T> | undefined | null = undefined): number {
+    if (p === null) return 0
+    p ??= this.root
+    const compareResult = this.compareFn(value, p.value)
+    let ans
+    if (compareResult === 0) {
+      ans = (p?.left?.size ?? 0) + 1
+    } else if (compareResult < 0) {
+      ans = this.getRankByValue(value, p.left)
+    } else {
+      ans = (p.left?.size ?? 0) + p.cnt + this.getRankByValue(value, p.right)
+    }
+    // 因为有负无穷大的存在，所以要减一
+    if (p === this.root) ans--
+    return ans
+  }
+  getValueByRank(rank: number, p: TreapNode<T> | undefined | null = undefined): T {
+    if (p === null) return this.T_MAX
+    if (p === undefined) {
+      p = this.root
+      // 因为有负无穷大的存在，所以要加一
+      rank++
+    }
+    if ((p.left?.size ?? 0) >= rank) {
+      return this.getValueByRank(rank, p.left)
+    }
+    if ((p.left?.size ?? 0) + p.cnt >= rank) {
+      return p.value
+    }
+    return this.getValueByRank(rank - ((p.left?.size ?? 0) + p.cnt), p.right)
+  }
+
+  get size() {
+    return this.root.size - 2
   }
 }
 
