@@ -5,7 +5,7 @@ const options: Options = {
     'cjs',
     'esm'
   ],
-  target: 'es2016',
+  target: 'esnext',
   clean: true,
   dts: true,
   entryPoints: [

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { Treap } from '../src/treap'
 
 describe('Treap', () => {
-  it('should support getPrev', () => {
+  it('should work', () => {
     const treap = new Treap(undefined, -1e5, 1e5)
     treap.insert(1)
     treap.insert(10)
@@ -24,5 +24,22 @@ describe('Treap', () => {
     expect(treap.getValueByRank(3)).toEqual(4)
     expect(treap.getValueByRank(4)).toEqual(10)
     expect(treap.getValueByRank(5)).toEqual(1e5)
+
+    treap.insert(4)
+    expect(treap.size).toEqual(5)
+    expect(treap.getValueByRank(3)).toEqual(4)
+    expect(treap.getValueByRank(4)).toEqual(4)
+    expect(treap.getValueByRank(5)).toEqual(10)
+
+    treap.remove(4)
+    expect(treap.size).toEqual(4)
+    expect(treap.getValueByRank(3)).toEqual(4)
+    expect(treap.getValueByRank(4)).toEqual(10)
+    expect(treap.getValueByRank(5)).toEqual(1e5)
+    expect(treap.getRankByValue(5)).toEqual(3)
+
+    expect([...treap.values()]).toEqual([1, 3, 4, 10])
+    treap.insert(4)
+    expect([...treap.values()]).toEqual([1, 3, 4, 4, 10])
   })
 })

@@ -1,3 +1,30 @@
+class SORTracker {
+  cnt = 1
+  treap = new Treap<[string, number]>((a, b) => {
+    if (a[1] === b[1]) {
+      return a[0] < b[0] ? -1 : 1
+    }
+    return -(a[1] - b[1])
+  })
+  constructor() {
+  }
+
+  add(name: string, score: number): void {
+    this.treap.insert([name, score])
+  }
+
+  get(): string {
+    return this.treap.getValueByRank(this.cnt++)[0]
+  }
+}
+
+/**
+* Your SORTracker object will be instantiated and called as such:
+* var obj = new SORTracker()
+* obj.add(name,score)
+* var param_2 = obj.get()
+*/
+
 /*
 Treap = Tree + Heap
 通过在每个节点上维护一个随机的权值，保证权值的大根堆性质，使得树具有随机性，能够维持比较平衡的左右子树高度
@@ -299,5 +326,3 @@ class Treap<T = number> {
     for (const v of this.inOrder(this.root)) yield v
   }
 }
-
-export { Treap }
