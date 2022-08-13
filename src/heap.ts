@@ -1,10 +1,10 @@
 /**
  * 默认是小根堆，修改排序函数可以改成大根堆
  */
-class Heap<T> {
+class Heap<T = number> {
   _data: T[] = [null as unknown as T]
   compareFn: (a: T, b: T) => number
-  constructor(compareFn: (a: T, b: T) => number = (a: T, b: T) => a < b ? -1 : 1) {
+  constructor(compareFn: (a: T, b: T) => number = (a: T, b: T) => a < b ? -1 : (a > b ? 1 : 0)) {
     this.compareFn = compareFn
   }
   _swap(i: number, j: number) {

@@ -4,9 +4,9 @@ My implementation of data structures and templates in TypeScript and JavaScript.
 
 ## Templates
 
-### Heap
-
-[heap.ts](src/heap.ts)
+- [heap](src/heap.ts)
+- [queue](src/queue.ts)
+- [treap](src/treap.ts)
 
 ## Development
 
